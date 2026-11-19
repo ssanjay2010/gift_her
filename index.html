@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Happy Birthday, Meow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f6f0e8; --paper2:#efe6da; --ink:#5c1e2c; --ink2:#7a3c48; --muted:#8c6e68;
+    --line:#c8a878; --card:#fffaf4;
+    --serif:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --sans:"DM Sans", system-ui, -apple-system, Segoe UI, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:300;
+       -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{display:block;max-width:100%}
+  .caps{font-family:var(--sans);font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);font-weight:400}
+  .serif{font-family:var(--serif);font-style:italic}
+  .rule{width:64px;height:1px;background:var(--line);margin:22px auto}
+  section{padding:96px 22px}
+  .wrap{max-width:980px;margin:0 auto}
+
+  /* ---------- cover ---------- */
+  #cover{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+         text-align:center;padding:40px 22px;position:relative}
+  #cover h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(46px,11vw,112px);line-height:1.02;margin:18px 0 6px}
+  #cover h1 .em{white-space:nowrap}
+  #cover p.sub{font-family:var(--serif);font-style:italic;font-size:clamp(19px,4.4vw,26px);color:var(--ink2);margin-top:8px}
+  .btn{margin-top:42px;display:inline-flex;align-items:center;gap:10px;border:1px solid var(--ink);background:transparent;color:var(--ink);
+       font-family:var(--sans);font-size:13px;letter-spacing:.24em;text-transform:uppercase;padding:15px 28px;border-radius:999px;cursor:pointer;
+       transition:background .3s,color .3s}
+  .btn:hover,.btn:focus-visible{background:var(--ink);color:var(--paper);outline:none}
+  .cover-strip{display:flex;gap:10px;justify-content:center;margin-top:46px;flex-wrap:nowrap}
+  .cover-strip img{width:min(22vw,150px);aspect-ratio:3/4;object-fit:cover;border-radius:2px;filter:saturate(.95)}
+  .cover-strip img:nth-child(2){transform:translateY(-14px)}
+  .cover-strip img:nth-child(4){transform:translateY(-14px)}
+  .scroll-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);opacity:.6}
+
+  /* ---------- story ---------- */
+  .head{text-align:center;margin-bottom:64px}
+  .head h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(38px,8vw,64px);line-height:1.05;margin-top:12px}
+  .story{display:flex;flex-direction:column;gap:110px}
+  .moment{display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:56px}
+  .moment:nth-child(even){grid-template-columns:1fr 1.1fr}
+  .moment:nth-child(even) figure{order:2}
+  .moment figure{position:relative}
+  .moment img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:2px;box-shadow:0 18px 40px -22px rgba(70,20,30,.45)}
+  .moment .num{font-family:var(--serif);font-style:italic;color:var(--line);font-size:22px}
+  .moment blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(28px,5vw,42px);line-height:1.2;margin:10px 0 14px;color:var(--ink)}
+  .moment .tr{font-size:14px;color:var(--muted);letter-spacing:.02em;line-height:1.6}
+  @media (max-width:720px){
+    .moment,.moment:nth-child(even){grid-template-columns:1fr;gap:22px}
+    .moment:nth-child(even) figure{order:0}
+    .story{gap:80px}
+    .moment .text{padding:0 4px}
+  }
+
+  /* ---------- all memories grid ---------- */
+  #all{background:var(--paper2)}
+  .grid{columns:4 180px;column-gap:10px}
+  .grid img{width:100%;margin-bottom:10px;border-radius:2px;break-inside:avoid;cursor:zoom-in;transition:opacity .3s}
+  .grid img:hover{opacity:.88}
+
+  /* ---------- letters ---------- */
+  .letters{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:760px;margin:0 auto}
+  @media (max-width:560px){.letters{grid-template-columns:1fr}}
+  .env{position:relative;aspect-ratio:1.55/1;background:var(--card);border:1px solid #e6d8c6;border-radius:4px;cursor:pointer;
+       display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;overflow:hidden;
+       transition:transform .35s ease, box-shadow .35s ease}
+  .env::before{content:"";position:absolute;top:0;left:0;right:0;height:56%;
+       background:linear-gradient(to bottom right,transparent 49.6%,#e6d8c6 50%,transparent 50.4%),
+                  linear-gradient(to bottom left,transparent 49.6%,#e6d8c6 50%,transparent 50.4%);
+       background-size:50% 100%;background-position:left,right;background-repeat:no-repeat;pointer-events:none}
+  .env:hover,.env:focus-visible{transform:translateY(-4px);box-shadow:0 18px 34px -24px rgba(70,20,30,.5);outline:none}
+  .seal{width:38px;height:38px;border-radius:50%;background:var(--ink);color:#f6d9dd;display:flex;align-items:center;justify-content:center;
+        font-size:17px;margin-bottom:12px;position:relative;z-index:1;box-shadow:0 3px 8px rgba(70,20,30,.3)}
+  .env .caps{font-size:11px}
+  .env .t{font-family:var(--serif);font-style:italic;font-size:26px;color:var(--ink);margin-top:6px;position:relative;z-index:1}
+  .env.read .seal{background:var(--line)}
+
+  /* ---------- modal ---------- */
+  .modal{position:fixed;inset:0;background:rgba(40,14,20,.55);display:flex;align-items:center;justify-content:center;padding:22px;
+         opacity:0;pointer-events:none;transition:opacity .35s;z-index:50;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+  .modal.open{opacity:1;pointer-events:auto}
+  .paper{background:var(--card);max-width:520px;width:100%;max-height:86vh;overflow:auto;border-radius:4px;padding:44px 34px 36px;
+         transform:translateY(16px);transition:transform .45s ease;box-shadow:0 30px 60px -20px rgba(0,0,0,.45);position:relative}
+  .modal.open .paper{transform:none}
+  .paper h3{font-family:var(--serif);font-style:italic;font-weight:400;font-size:34px;line-height:1.1;margin:10px 0 20px}
+  .paper p{font-family:var(--serif);font-size:21px;line-height:1.55;color:#3f1a22;margin-bottom:14px}
+  .paper .sign{font-style:italic;text-align:right;margin-top:18px}
+  .close{position:absolute;top:12px;right:14px;border:0;background:none;font-size:26px;color:var(--muted);cursor:pointer;line-height:1;padding:6px}
+  .lightbox .paper{padding:0;background:transparent;box-shadow:none;max-width:min(92vw,720px)}
+  .lightbox img{max-height:84vh;margin:0 auto;border-radius:2px}
+  .lightbox .close{color:#fff;top:-6px;right:-4px}
+
+  /* ---------- final letter ---------- */
+  #letter .sheet{max-width:640px;margin:0 auto;background:var(--card);padding:56px 40px;border:1px solid #eadccb;border-radius:3px;
+                 box-shadow:0 30px 60px -40px rgba(70,20,30,.45)}
+  #letter .sheet p{font-family:var(--serif);font-size:22px;line-height:1.65;color:#3f1a22;margin-bottom:18px}
+  #letter .dear{font-style:italic;font-size:30px !important;color:var(--ink) !important}
+  #letter .pull{font-style:italic;font-size:28px !important;text-align:center;color:var(--ink) !important;margin:30px 0 !important}
+  #letter .sign{font-style:italic;text-align:right;font-size:24px !important}
+  @media (max-width:560px){#letter .sheet{padding:40px 24px}}
+
+  /* ---------- wish ---------- */
+  #wish{text-align:center;padding-bottom:140px}
+  .cake{width:150px;margin:36px auto 0;position:relative;height:190px}
+  .candle{position:absolute;left:50%;top:22px;width:12px;height:56px;margin-left:-6px;border-radius:3px;
+          background:repeating-linear-gradient(45deg,#f2d4d9 0 6px,#fff 6px 12px)}
+  .flame{position:absolute;left:50%;top:-8px;width:16px;height:28px;margin-left:-8px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+         background:radial-gradient(circle at 50% 70%,#fff6d6 0 25%,#ffc75a 45%,#ff8a3c 75%,transparent 76%);
+         animation:flicker 1.4s infinite ease-in-out;transform-origin:50% 90%;transition:opacity .4s, transform .4s;
+         filter:drop-shadow(0 0 10px rgba(255,190,90,.8))}
+  .out .flame{opacity:0;transform:scale(.2) translateY(10px)}
+  .smoke{position:absolute;left:50%;top:-30px;width:8px;height:40px;margin-left:-4px;opacity:0;
+         background:linear-gradient(to top,rgba(150,140,140,.5),transparent);border-radius:50%}
+  .out .smoke{animation:smoke 2s ease-out forwards}
+  .tier{position:absolute;left:50%;transform:translateX(-50%);border-radius:6px}
+  .t1{top:78px;width:110px;height:46px;background:#f3d9dc;border-bottom:6px solid #e7bcc3}
+  .t2{top:120px;width:150px;height:56px;background:#5c1e2c;border-bottom:6px solid #47141f}
+  .t2::before{content:"";position:absolute;top:-1px;left:0;right:0;height:14px;
+              background:radial-gradient(circle at 10px 0,#f3d9dc 9px,transparent 10px) 0 0/20px 14px repeat-x}
+  .plate{position:absolute;left:50%;transform:translateX(-50%);top:180px;width:190px;height:8px;border-radius:50%;background:#e2d3c1}
+  @keyframes flicker{0%,100%{transform:rotate(-2deg) scaleY(1)}50%{transform:rotate(3deg) scaleY(1.08)}}
+  @keyframes smoke{0%{opacity:.7;transform:translateY(0) scaleX(1)}100%{opacity:0;transform:translateY(-50px) scaleX(2.4)}}
+  #wishMsg{font-family:var(--serif);font-style:italic;font-size:clamp(30px,7vw,52px);color:var(--ink);margin-top:30px;min-height:1.3em;
+           opacity:0;transition:opacity 1s}
+  #wishMsg.show{opacity:1}
+  .floaty{position:fixed;bottom:-40px;pointer-events:none;z-index:60;animation:rise linear forwards}
+  @keyframes rise{to{transform:translateY(-115vh) rotate(var(--r));opacity:0}}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity 1s ease, transform 1s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}.flame{animation:none}}
+  footer{text-align:center;padding:0 0 60px}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<header id="cover">
+  <div class="caps">For Meow, from her Polar Bear</div>
+  <h1>Happy Birthday,<br><span class="em">Meow 💕</span></h1>
+  <p class="sub">Naan pakkathula illa… aana indha page fulla naan dhaan.</p>
+  <div class="cover-strip" aria-hidden="true">
+    <img src="img/p25.jpg" alt=""><img src="img/p04.jpg" alt=""><img src="img/p22.jpg" alt=""><img src="img/p29.jpg" alt=""><img src="img/p15.jpg" alt="">
+  </div>
+  <button class="btn" onclick="document.getElementById('story').scrollIntoView()">Open your gift ↓</button>
+</header>
+
+<!-- STORY -->
+<section id="story">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="caps">Chapter one</div>
+      <h2>Namma kadhai</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="story" id="storyList"></div>
+  </div>
+</section>
+
+<!-- ALL PHOTOS -->
+<section id="all">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="caps">Chapter two</div>
+      <h2>Innum niraya ninaivugal</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="grid reveal" id="grid"></div>
+  </div>
+</section>
+
+<!-- LETTERS -->
+<section id="open-when">
+  <div class="wrap">
+    <div class="head reveal">
+      <div class="caps">Chapter three</div>
+      <h2>Open when…</h2>
+      <div class="rule"></div>
+      <p class="serif" style="font-size:20px;color:var(--ink2)">Unakkaaga naalu chinna letters. Thevai padum bodhu open pannu.</p>
+    </div>
+    <div class="letters reveal" id="letters"></div>
+  </div>
+</section>
+
+<!-- FINAL LETTER -->
+<section id="letter">
+  <div class="head reveal">
+    <div class="caps">Chapter four</div>
+    <h2>Un Polar Bear-oda letter</h2>
+    <div class="rule"></div>
+  </div>
+  <div class="sheet reveal">
+    <p class="dear">Dear Meow,</p>
+    <p>Innaikku un birthday. Naan un pakkathula illa nu konjam kashtama dhaan irukku. Aana indha chinna page moolama, naan unnoda dhaan irukken.</p>
+    <p>Un sirippu, un kovam, un "meow", ellaamey enakku romba special. Nee en life-la vandha appuram dhaan, saadharana naal kooda azhaga theriyudhu.</p>
+    <p>Indha varusham un ella kanavum nadakkanum. Nee eppovum ippadiye sirichikittu irukkanum. Adhukku naan eppovum un pakkathula iruppen, dhooram irundhaalum.</p>
+    <p class="pull">"Naan thedina ellaa kelvikkum,<br>badhil nee dhaan."</p>
+    <p>Happy birthday, en Meow.</p>
+    <p class="sign">Un Polar Bear 🐻‍❄️</p>
+  </div>
+</section>
+
+<!-- WISH -->
+<section id="wish">
+  <div class="head reveal" style="margin-bottom:10px">
+    <div class="caps">One last thing</div>
+    <h2>Make a wish</h2>
+    <div class="rule"></div>
+    <p class="serif" style="font-size:20px;color:var(--ink2)">Kannai moodi, oru wish pannu… apparam candle-a blow pannu.</p>
+  </div>
+  <div class="cake" id="cake" aria-hidden="true">
+    <div class="candle"><div class="smoke"></div><div class="flame"></div></div>
+    <div class="tier t1"></div><div class="tier t2"></div><div class="plate"></div>
+  </div>
+  <button class="btn" id="blow">Blow the candle</button>
+  <div id="wishMsg">Happy Birthday, Meow 💕</div>
+</section>
+
+<footer><div class="caps">Eppovum unnoda · Un Polar Bear</div></footer>
+
+<!-- modals -->
+<div class="modal" id="letterModal" role="dialog" aria-modal="true">
+  <div class="paper"><button class="close" aria-label="Close">×</button><div id="letterBody"></div></div>
+</div>
+<div class="modal lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <div class="paper"><button class="close" aria-label="Close">×</button><img id="lbImg" alt=""></div>
+</div>
+
+<script>
+const moments = [
+  ["p05","Indha look-ku dhaan naan vizhundhen.","This is the look I fell for."],
+  ["p04","Ovvoru train payanamum, unnoda irundha dhaan azhagu.","Every train journey is only beautiful with you."],
+  ["p03","Biriyani-ya vida, unna dhaan adhigama rasichen.","I enjoyed you more than the biriyani."],
+  ["p18","Screen-la padam odichu, aana en kann unna mattum dhaan paathuchu.","The movie played on the screen, but my eyes were only on you."],
+  ["p24","Andha saree-la, nee oru kavidhai maadhiri irundha.","In that saree, you looked like a poem."],
+  ["p25","Ivlo lights irundhum, nee dhaan bright-a irundha.","So many lights, and you were still the brightest."],
+  ["p30","Andha beach night, innum en manasula glow aagudhu.","That night at the beach still glows in my heart."],
+  ["p17","Namma rendu perum, oru frame-la. Adhu podhum.","The two of us in one frame. That's enough."],
+  ["p28","Ovvoru goodbye-um, adutha hello-kaaga dhaan.","Every goodbye is just waiting for the next hello."],
+  ["p29","Un sirippu dhaan en ulagam.","Your smile is my world."],
+  ["p19","Chinna chinna payanangal, periya santhosham.","Little rides, big happiness."],
+  ["p08","En favourite place? Un pakkathula.","My favourite place? Right next to you."],
+];
+const sl = document.getElementById('storyList');
+moments.forEach(([img, ta, en], i) => {
+  const el = document.createElement('div');
+  el.className = 'moment reveal';
+  el.innerHTML = `<figure><img loading="lazy" src="img/${img}.jpg" alt=""></figure>
+    <div class="text"><div class="num">${String(i+1).padStart(2,'0')}</div>
+    <blockquote>${ta}</blockquote><div class="tr">${en}</div></div>`;
+  sl.appendChild(el);
+});
+
+const grid = document.getElementById('grid');
+const gridOrder = [0,22,7,3,15,1,13,10,23,12,5,2,27,11,21,26,17,24,19,4,16,14,20,18,29,9,6,8,25,28,30];
+gridOrder.forEach(n => {
+  const im = document.createElement('img');
+  im.loading = 'lazy'; im.src = `img/p${String(n).padStart(2,'0')}.jpg`; im.alt = '';
+  im.onclick = () => { document.getElementById('lbImg').src = im.src; openModal('lightbox'); };
+  grid.appendChild(im);
+});
+
+const letters = [
+  ["💌","you miss me","Open when you miss me",
+   ["Kannai moodi, namma train payanatha nenachuko. Window seat, un thol mela naan saanjikittu.",
+    "Dhooram oru number dhaan, Meow. Naan eppovum un pakkathula dhaan irukken.",
+    "Ippove call pannu. Naan wait panitu dhaan irupen."]],
+  ["🌙","you can't sleep","Open when you can't sleep",
+   ["Thookam varala na, ennai call pannu. Time ellaam paakka vendaam.",
+    "Illaatti indha line-a padichitu kannai moodu: naalaikkum, naan unnoda dhaan iruppen.",
+    "Good night, en Meow."]],
+  ["🌧","you're sad","Open when you're sad",
+   ["Un kovam, un azhugai, un silence, ellaamey enakku pidikkum. Aana un sirippu dhaan en favourite.",
+    "Konjam sirichiko. Unakkaaga oru periya Polar Bear hug anuppuren 🐻‍❄️",
+    "Nee thaniya illa. Eppovum illa."]],
+  ["✨","you need a smile","Open when you need a smile",
+   ["Nee \"meow\" nu sonna, naan innum blush pannuren. Idhu yaarukkum theriyaadhu.",
+    "Ippo unakku therinjiduchu 😌",
+    "Ippo sirichiya? Adhaan. Andha sirippukku dhaan naan ivlo panren."]],
+];
+const lw = document.getElementById('letters');
+letters.forEach(([seal, short, title, paras], i) => {
+  const b = document.createElement('button');
+  b.className = 'env';
+  b.innerHTML = `<div class="seal">${seal}</div><div class="caps">Open when</div><div class="t">${short}</div>`;
+  b.onclick = () => {
+    document.getElementById('letterBody').innerHTML =
+      `<div class="caps">${seal}&nbsp; A letter for you</div><h3>${title}</h3>` +
+      paras.map(p => `<p>${p}</p>`).join('') + `<p class="sign">Un Polar Bear</p>`;
+    b.classList.add('read'); openModal('letterModal');
+  };
+  lw.appendChild(b);
+});
+
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+document.querySelectorAll('.modal').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m || e.target.classList.contains('close')) m.classList.remove('open'); });
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.modal.open').forEach(m => m.classList.remove('open')); });
+
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }), {threshold:.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+function floatHearts(n){
+  const icons = ['💕','💗','♥','✨','💖'];
+  for (let i=0;i<n;i++){
+    const s = document.createElement('span');
+    s.className = 'floaty'; s.textContent = icons[Math.floor(Math.random()*icons.length)];
+    s.style.left = (Math.random()*100)+'vw';
+    s.style.fontSize = (14+Math.random()*24)+'px';
+    s.style.color = '#c4506a';
+    s.style.setProperty('--r', (Math.random()*80-40)+'deg');
+    s.style.animationDuration = (4+Math.random()*4)+'s';
+    s.style.animationDelay = (Math.random()*1.6)+'s';
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 10000);
+  }
+}
+document.getElementById('blow').onclick = function(){
+  const cake = document.getElementById('cake');
+  if (cake.classList.contains('out')) { cake.classList.remove('out'); this.textContent = 'Blow the candle'; document.getElementById('wishMsg').classList.remove('show'); return; }
+  cake.classList.add('out'); this.textContent = 'Light it again';
+  document.getElementById('wishMsg').classList.add('show');
+  floatHearts(46);
+};
+</script>
+</body>
+</html>
